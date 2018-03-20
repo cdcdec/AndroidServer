@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<!-- 允许在Struts2的路径配置中使用斜杠. -->
+     <constant name="struts.enable.SlashesInActionNames" value="true"/>
+      <!-- 这个是动态方法调用，在action用感叹号访问action的方法.false不允许这么使用。-->
+      <!-- 主要是在访问的时候http://127.0.0.1:8088/ProjectName/login!add.action-->
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" 
+		/>
+	<constant name="struts.custom.i18n.resources" value="app"></constant>
+	<!-- struts2默认行为标签 ,开发模式,可以更好的打印错误. -->
+	<constant name="struts.devMode" value="false" />
+	<!-- 配置web默认编码集 -->
+	<constant name="struts.i18n.encoding" value="UTF-8"></constant>
+	<!-- 默认的请求后缀是.action,这里配置后action后缀和do后缀和没有后缀都可以. -->
+	<constant name="struts.action.extension" value="action,do,"></constant>
+	<!-- 设置浏览器是否缓存静态内容,默认true.开发阶段设为false -->
+	<constant name="struts.serve.static.browserCache" value="false"></constant>
+	<!--当struts配置文件修改后,系统是否自动重新加载该文件,默认false -->
+	<constant name="struts.configuration.xml.reload" value="true"></constant>
+	<!--默认视图主题 以下三行会取消struts2标签的样式。 -->
+	<constant name="struts.ui.theme" value="simple"></constant>
+	<constant name="struts.ui.templateDir" value="template"></constant>
+	<constant name="struts.ui.templateSuffix" value="ftl"></constant>
+	<!-- 区分不同请求的包标签 -->
+	<!-- name包名,用于被别的包调用或者继承 -->
+	<package name="default" namespace="/" extends="struts-default,json-default">
+		<!--在浏览器里访问http://localhost:8080/Login.action或者 http://localhost:8080/Login.do -->
+		<action name="Login" class="com.cdc.baseactions.LoginAction">
+			<result name="error">/error.jsp</result>
+			<result name="success">/welcome.jsp</result>
+			<result name="ok" type="json">
+			<param name="excludeProperties">username,password</param>
+			</result>
+		</action>
+		<action name="MLogin" class="com.cdc.baseactions.MLoginAction">
+			<result name="error">/error.jsp</result>
+			<result name="success">/welcome.jsp</result>
+			<interceptor-ref name="modelDriven"></interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		<action name="SLogin" class="com.cdc.baseactions.SLoginAction">
+			<result name="error">/error.jsp</result>
+			<result name="success">/welcome.jsp</result>
+		</action>
+
+	</package>
+	<package name="websource" namespace="/" extends="struts-default,json-default">
+		<action name="GetWebSourceFirst" class="com.cdc.getwebsourceactions.FirstMethodAction">
+			<result name="success">/welcome.jsp</result>
+		</action>
+		<action name="GetWebSourceSecond" class="com.cdc.getwebsourceactions.SecondMethodAction">
+			<result name="success">/welcome.jsp</result>
+		</action>
+		<action name="GetWebSourceThird" class="com.cdc.getwebsourceactions.ThirdMethodAction">
+			<result name="success">/welcome.jsp</result>
+		</action>
+		<action name="GetWebSourceFourth" class="com.cdc.getwebsourceactions.FourthMethodAction">
+			<result name="success">/welcome.jsp</result>
+		</action>
+	</package>
+	<package name="fileuploadpackage" namespace="/" extends="struts-default,json-default">
+		<action name="FileUploadAction" class="com.cdc.fileupload.FileUploadAction">
+			<result name="success">/welcome.jsp</result>
+			<!-- 配置拦截器限制上传文件类型及大小 -->
+			<!-- <interceptor-ref name="fileUpload">
+				<param name="allowedTypes">image/bmp,image/x-png,image/gif,image/jpeg</param>
+				<param name="maximumSize">1M</param>
+			</interceptor-ref>-->
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+	</package>
+	<package name="mobiledate" namespace="/" extends="struts-default,json-default">
+		<action name="simple" class="com.cdc.api1.MobileDataAction">
+		</action>
+		<action name="mobileupload" class="com.cdc.api1.MobileUploadAction">
+		</action>
+		<!-- 访问:http://192.168.0.164:8080/api/json/action -->
+		<action name="*/action" class="com.cdc.api1.MobileReceiveJson" method="{1}">
+		</action>
+	</package>
+	
+	<package name="json1"  namespace="/"  extends="struts-default,json-default">
+	<!-- {"JSONResult":"success","data":{"data_id":"123","data_imgpath":"skko","data_level":"jsjko","data_name":"hjjk"}} -->
+	<action name="getJson1" class="com.cdc.api1.MobileReceiveJson">
+       	 	<result  type="json" />
+     	</action>
+	</package>
+	<package name="json2"  namespace="/"  extends="struts-default,json-default">
+	<!-- {"data":{"data_id":"123","data_imgpath":"skko","data_level":"jsjko","data_name":"hjjk"}} -->
+	<action name="getJson2" class="com.cdc.api1.MobileReceiveJson"  method="etJSONResult2">
+       	 	<result name="success" type="json" />
+     	</action>
+	</package>
+	<!-- include标签,引入其它的xml配置文件 -->
+</struts>
