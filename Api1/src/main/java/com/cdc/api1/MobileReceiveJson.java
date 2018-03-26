@@ -2,12 +2,14 @@ package com.cdc.api1;
 
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -51,8 +53,32 @@ public class MobileReceiveJson extends ActionSupport {
         out.close();  
 	}
 	
+//	public String getJSONResult(){
+//		data=new Data("123","hjjk","jsjko","skko");
+//		
+//		return SUCCESS;
+//		
+//	}
 	
-//http://yshjava.iteye.com/blog/1333104
+	//解析请求的Json数据
+    private String getRequestPostData(HttpServletRequest request) throws IOException {
+        int contentLength = request.getContentLength();
+        if(contentLength<0){
+            return null;
+        }
+        byte buffer[] = new byte[contentLength];
+        for (int i = 0; i < contentLength;) {
+            int len = request.getInputStream().read(buffer, i, contentLength - i);
+            if (len == -1) {
+                break;
+            }
+            i += len;
+        }
+        return new String(buffer, "utf-8");
+    }
+	
+	
+
 	
 	private Data  data;
 	public Data getData() {
@@ -66,8 +92,13 @@ public class MobileReceiveJson extends ActionSupport {
 
 
 	public String getJSONResult(){
-		data=new Data("123","hjjk","jsjko","skko");
-		
+		//data=new Data("123","hjjk","jsjko","skko");
+		try {
+			json();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return SUCCESS;
 		
 	}
@@ -76,7 +107,7 @@ public class MobileReceiveJson extends ActionSupport {
 	public String etJSONResult2(){
 		data=new Data("123","hjjk","jsjko","skko");
 		
-		return SUCCESS;
+		return "success00";
 		
 	}
 

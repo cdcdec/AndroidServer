@@ -49,6 +49,7 @@ public class MobileDataAction extends ActionSupport {
 		if (param1 == null || param2 == null) {
 			user.setUsername("aaron");
 			user.setPassword("aaronno");
+			user.setUrl("https://cdcdec.github.io/images/%E5%A4%B4%E5%83%8F%E5%A4%A7%E7%99%BD_300.jpg");
 			Gson gson = new Gson();
 			PrintWriter p = response.getWriter();
 			simpleBack.setUser(user);
@@ -56,10 +57,10 @@ public class MobileDataAction extends ActionSupport {
 		} else {
 			user.setUsername(param1);
 			user.setPassword(param2);
+			user.setUrl("https://cdcdec.github.io/images/%E5%A4%B4%E5%83%8F%E5%A4%A7%E7%99%BD_300.jpg");
 			Gson gson = new Gson();
 			PrintWriter p = response.getWriter();
-			simpleBack.setUser(user);
-			p.print(gson.toJson(simpleBack));
+			p.print(gson.toJson(user));
 		}
 		return null;
 	}
@@ -68,7 +69,6 @@ public class MobileDataAction extends ActionSupport {
 		request = ServletActionContext.getRequest();
 		response = ServletActionContext.getResponse();
 		con = ServletActionContext.getServletContext();
-
 		response.setCharacterEncoding("UTF-8");
 	}
 

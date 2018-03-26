@@ -92,7 +92,7 @@
 	<package name="json2"  namespace="/"  extends="struts-default,json-default">
 	<!-- {"data":{"data_id":"123","data_imgpath":"skko","data_level":"jsjko","data_name":"hjjk"}} -->
 	<action name="getJson2" class="com.cdc.api1.MobileReceiveJson"  method="etJSONResult2">
-       	 	<result name="success" type="json" />
+       	 	<result name="success00" type="json" />
      	</action>
 	</package>
 	<!-- include标签,引入其它的xml配置文件 -->
